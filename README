@@ -1,0 +1,87 @@
+    This program implements a Photo Editor for both colored and black and
+white images.
+
+
+At the beginning of the program, I declared two structures: one for the color
+matrix, where I store values for each color channel, and another to store 
+information about the matrix.
+
+I use the "comments" function to skip over comments.
+
+In the "load" function, the matrix associated with the image is 
+loaded into memory. This function also uses functions for dynamic 
+allocation of both the simple and color matrices, as well as functions 
+to assign values. Assignment is done based on the code of the matrix. 
+If the code is 2 or 3, I read the matrix elements in text format, grayscale, 
+or color. If the code is 5 or 6, I read the matrix elements in binary format.
+
+The "nr_cuv" function returns the number of words in a string of characters.
+
+In the "select" function, conversion from words to numbers is done for 
+coordinates. If the first coordinate is larger than the second, I swap 
+them. The "select" function is made up of two other functions: 
+"select_simple" and "select_all." In the first function, I check 
+if the received coordinates are valid. In the second function, the 
+entire image is selected. In the "select_simple" function, I check if the four
+received coordinates are valid, and if they are, I assign them to the 
+structure's values. In the "select_all" function, I assign the values 
+for the entire selection's coordinates to the structure.
+
+In the "histo" function, I declare a frequency array where I store the number
+of occurrences of matrix elements. Then, I adjust the number of bins 
+as required, storing the values for each bin in the "fr" array. After 
+calculating the number with the most occurrences, I calculate the number 
+of stars to display on each line, using the formula from the documentation.
+The value of the "poz" variable represents the number of intervals to
+which I bring the frequency array.
+
+In the "equalize" function, I calculate the number of occurrences of matrix 
+elements, storing these values in the "vf" frequency array.
+Then, to calculate the new values of the matrix elements,
+I use the formula provided in the assignment documentation.
+
+The "fcrop" function consists of two functions: "crop_gray" and "crop_color".
+In the "crop_gray" function, I declare a new matrix and a array. 
+In the array, I store the values from the matrix that fall within the 
+current selection. Then, I copy the elements from the array into the new 
+matrix. Finally, I allocate the main matrix with the reduced dimensions and
+fill it with the values from the copied matrix, assigning the new values
+to the other elements in the structure. The same process applies to 
+the "crop_color" function, with the only difference being the 
+way I allocated the matrix and array.
+
+In the "rotation" function, I convert the characters into a number, 
+representing the degrees by which I rotate the matrix. Within this function, 
+I use the "rot_90" and "rot_90_color" functions. In the "rot_90" 
+function, there are two cases: rotating the entire matrix or rotating a 
+submatrix within the larger matrix. In the first case, I declare a new 
+matrix where I store the main matrix rotated by 90 degrees, changing 
+the matrix's dimensions. In the second case, I declare a array and a 
+matrix. In the array, I store the values from the submatrix, which I 
+then insert into the copied matrix. Then, I refill the array with elements
+from the copied matrix, which I rotated by 90 degrees. Finally, I assign the
+new values to the elements of the submatrix. The same applies to the 
+"rot_90_color" function. In the "rotation" function, if the number of 
+degrees is 180 or -180, I rotate it twice by 90 degrees; if it is 90 or -270,
+I rotate it once by 90 degrees; if it is 270 or -90, I rotate it 
+three times by 90 degrees; and if it is 360, -360, or 0, I rotate 
+it four times by 90 degrees.
+
+In the "apply" function, I declare a 3x3 matrix that receives some 
+values depending on the filter being applied, with the values assigned 
+through the "edge," "sharpen," "blur," and "g_blur" functions. 
+Then, I declare a new matrix that is a copy of the main matrix. 
+For each 3x3 submatrix of the large matrix, I calculate new values
+using the matrix where I store the filter's values, applying 
+this to all 3x3 submatrices from the large matrix.
+
+In the "save" function, the matrix is written to a file in text or 
+binary format, and the other elements are written in text format. 
+This function uses two other functions that handle writing for 
+text and binary formats.
+
+In the "exit" case, if there is a matrix loaded in memory, 
+I free the memory allocated to it.
+
+In the "main" function, I read strings with commands, 
+processing the words from these strings.
